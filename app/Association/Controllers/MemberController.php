@@ -11,11 +11,17 @@ class MemberController extends Controller
     //
     public function index()
     {
-        return [
+        $members = Member::all();
+        $data = [
             'meta' => [
                 'status' => 200,
             ],
-            'data' => Member::all()
+            'data' => $members,
         ];
+
+        return response($data)
+            ->withHeaders([
+                'X-Total-Count' => $members->count(),
+            ]);
     }
 }
