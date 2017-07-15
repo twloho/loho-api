@@ -1,7 +1,7 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\Member\Member::class, function (Faker\Generator $faker) {
+$factory->define(App\Association\Member::class, function (Faker\Generator $faker) {
     $faker->addProvider(new Faker\Provider\zh_TW\Address($faker));
     $faker->addProvider(new Faker\Provider\zh_TW\Company($faker));
     $faker->addProvider(new Faker\Provider\zh_TW\DateTime($faker));

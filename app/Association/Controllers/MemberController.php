@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Member\Controllers;
+namespace App\Association\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Member\Member;
+use App\Association\Member;
 
 class MemberController extends Controller
 {

@@ -17,4 +17,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/members', '\App\Member\Controllers\MemberController@index');
+Route::get('/members', '\App\Association\Controllers\MemberController@index');

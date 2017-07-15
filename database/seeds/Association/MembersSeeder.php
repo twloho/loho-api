@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeds\Member;
+namespace Database\Seeds\Association;
 
 use DB;
 use Illuminate\Database\Seeder;
@@ -17,6 +17,6 @@ class MembersSeeder extends Seeder
         //
          DB::table('members')->truncate();
 
-        factory(\App\Member\Member::class, 10)->create();
+        factory(\App\Association\Member::class, 10)->create();
     }
 }
