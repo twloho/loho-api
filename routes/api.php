@@ -13,8 +13,16 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+/**
+ * @SWG\Swagger(
+ *   schemes={"http"},
+ *   host="api.loho.dev",
+ *   basePath="/api",
+ *   @SWG\Info(
+ *     title="LOHO API",
+ *     version="0.1.0",
+ *   ),
+ * )
+ */
 
 Route::get('/members', '\App\Association\Controllers\MemberController@index');
