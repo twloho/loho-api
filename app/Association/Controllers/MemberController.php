@@ -2,17 +2,17 @@
 
 namespace App\Association\Controllers;
 
-use App\Association\Repositories\MemberRepository;
+use App\Association\Services\MemberService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class MemberController extends Controller
 {
-    protected $memberRepository;
+    protected $memberService;
 
-    public function __construct(MemberRepository $memberRepository)
+    public function __construct(MemberService $memberService)
     {
-        $this->memberRepository = $memberRepository;
+        $this->memberService = $memberService;
     }
 
     /**
@@ -43,7 +43,7 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $members = $this->memberRepository->getAll();
+        $members = $this->memberService->getList();
         $data = [
             'meta' => [
                 'status' => 200,
