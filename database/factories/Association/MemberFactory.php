@@ -22,8 +22,8 @@ $factory->define(App\Association\Member::class, function (Faker\Generator $faker
         'birthday' => $faker->dateTime(),
 
         'email' => $faker->freeEmail(),
-        'home_phone_number' => $faker->phoneNumber,
-        'cell_phone_number' => $faker->phoneNumber,
+        'home_phone_number' => $faker->regexify('09[0-9]{8}'),
+        'cell_phone_number' => $faker->regexify('02-[0-9]{8}'),
 
         'postcode' => $faker->postcode(),
         'city' => $faker->city(),
@@ -32,6 +32,6 @@ $factory->define(App\Association\Member::class, function (Faker\Generator $faker
 
         'contact_last_name' => $faker->lastName,
         'contact_first_name' => $faker->firstName,
-        'contact_cell_phone_number' => $faker->phoneNumber,
+        'contact_cell_phone_number' => $faker->regexify('09[0-9]{8}'),
     ];
 });
