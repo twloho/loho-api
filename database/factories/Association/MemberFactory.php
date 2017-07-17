@@ -12,7 +12,7 @@ $factory->define(App\Association\Member::class, function (Faker\Generator $faker
     $faker->addProvider(new Faker\Provider\zh_TW\Text($faker));
 
     return [
-        'type' => $faker->numberBetween(1, 3),
+        'status' => $faker->numberBetween(1, 3),
         'serial_number' => $faker->regexify('A[0-9]{9}'),
 
         'last_name' => $faker->lastName,

@@ -13,7 +13,7 @@ class MemberTransformer extends TransformerAbstract
      *   type="object",
      *   required="['id']",
      *   @SWG\Property(property="id", type="integer"),
-     *   @SWG\Property(property="type", type="integer"),
+     *   @SWG\Property(property="status", type="integer"),
      *   @SWG\Property(property="serial_number", type="string"),
      *   @SWG\Property(property="last_name", type="string"),
      *   @SWG\Property(property="first_name", type="string"),
@@ -36,7 +36,7 @@ class MemberTransformer extends TransformerAbstract
 	{
 	    return [
             'id' => (int) $member['id'],
-            'type' => (int) $member['type'],
+            'status' => (int) $member['status'],
             'serial_number' => $member['serial_number'],
             'last_name' => $member['last_name'],
             'first_name' => $member['first_name'],
