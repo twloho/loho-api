@@ -2,17 +2,22 @@
 
 namespace App\Association\Controllers;
 
+use App\Association\Transformers\MemberTransformer;
 use App\Association\Services\MemberService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use League\Fractal\Manager as FractalManager;
+use League\Fractal\Resource\Collection;
 
 class MemberController extends Controller
 {
     protected $memberService;
+    protected $fractal;
 
-    public function __construct(MemberService $memberService)
+    public function __construct(MemberService $memberService, FractalManager $fractal)
     {
         $this->memberService = $memberService;
+        $this->fractal = $fractal;
     }
 
     /**
@@ -43,16 +48,20 @@ class MemberController extends Controller
      */
     public function index()
     {
+        // Get members
         $members = $this->memberService->getList();
-        $data = [
-            'meta' => [
-                'status' => 200,
-            ],
-            'data' => $members,
-        ];
 
+        // Transformer
+        $resources = new Collection($members, new MemberTransformer);
+        $resources->setMeta(['status' => 200]);
+
+        // Serializer
+        $data = $this->fractal->createData($resources)->toJson();
+
+        // Response
         return response($data)
             ->withHeaders([
+                'Content-Type' => 'application/json',
                 'X-Total-Count' => $members->count(),
             ]);
     }
