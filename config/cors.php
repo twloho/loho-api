@@ -14,7 +14,7 @@ return [
     'allowedOrigins' => ['*'],
     'allowedHeaders' => ['*'],
     'allowedMethods' => ['*'],
-    'exposedHeaders' => ['X-Total-Count'],
+    'exposedHeaders' => [],
     'maxAge' => 0,
 ];
 

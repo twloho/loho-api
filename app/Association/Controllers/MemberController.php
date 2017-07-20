@@ -67,7 +67,6 @@ class MemberController extends Controller
         return response($data)
             ->withHeaders([
                 'Content-Type' => 'application/vnd.api+json',
-                'X-Total-Count' => $members->count(),
             ]);
     }
 }
