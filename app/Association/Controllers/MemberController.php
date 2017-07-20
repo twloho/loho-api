@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use League\Fractal\Manager as FractalManager;
 use League\Fractal\Resource\Collection;
+use League\Fractal\Serializer\JsonApiSerializer;
 
 class MemberController extends Controller
 {
@@ -18,6 +19,7 @@ class MemberController extends Controller
     {
         $this->memberService = $memberService;
         $this->fractal = $fractal;
+        $this->fractal->setSerializer(new JsonApiSerializer());
     }
 
     /**
@@ -26,7 +28,7 @@ class MemberController extends Controller
      *   summary="Get member list",
      *   description="Member list.",
      *   tags={"member"},
-     *   produces={"application/json"},
+     *   produces={"application/vnd.api+json"},
      *   @SWG\Response(
      *     response=200,
      *     description="successful operation",
@@ -52,8 +54,11 @@ class MemberController extends Controller
         $members = $this->memberService->getList();
 
         // Transformer
-        $resources = new Collection($members, new MemberTransformer);
-        $resources->setMeta(['status' => 200]);
+        $resources = new Collection($members, new MemberTransformer, 'members');
+        $resources->setMeta([
+            'status' => 200,
+            'total' => $members->count(),
+        ]);
 
         // Serializer
         $data = $this->fractal->createData($resources)->toJson();
@@ -61,7 +66,7 @@ class MemberController extends Controller
         // Response
         return response($data)
             ->withHeaders([
-                'Content-Type' => 'application/json',
+                'Content-Type' => 'application/vnd.api+json',
                 'X-Total-Count' => $members->count(),
             ]);
     }
