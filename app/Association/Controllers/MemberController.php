@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use League\Fractal\Manager as FractalManager;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Serializer\JsonApiSerializer;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class MemberController extends Controller
 {
@@ -19,7 +20,7 @@ class MemberController extends Controller
     {
         $this->memberService = $memberService;
         $this->fractal = $fractal;
-        $this->fractal->setSerializer(new JsonApiSerializer());
+        $this->fractal->setSerializer(new JsonApiSerializer(url('')));
     }
 
     /**
@@ -29,6 +30,8 @@ class MemberController extends Controller
      *   description="Member list.",
      *   tags={"member"},
      *   produces={"application/vnd.api+json"},
+     *   @SWG\Parameter(in="query", name="page", type="number"),
+     *   @SWG\Parameter(in="query", name="perPage", type="number"),
      *   @SWG\Response(
      *     response=200,
      *     description="successful operation",
@@ -42,26 +45,50 @@ class MemberController extends Controller
      *       @SWG\Property(
      *         property="meta",
      *         type="object",
-     *         @SWG\Property(property="status", type="integer", example=200)
-     *       )
+     *         @SWG\Property(property="status", type="integer", example=200),
+     *         @SWG\Property(
+     *           property="pagination",
+     *           type="object",
+     *           @SWG\Property(property="total", type="integer", example=100),
+     *           @SWG\Property(property="count", type="integer", example=10),
+     *           @SWG\Property(property="per_page", type="integer", example=10),
+     *           @SWG\Property(property="current_page", type="integer", example=1),
+     *           @SWG\Property(property="total_pages", type="integer", example=10)
+     *         )
+     *       ),
+     *       @SWG\Property(
+     *         property="links",
+     *         type="object",
+     *         @SWG\Property(property="self", type="string"),
+     *         @SWG\Property(property="first", type="string"),
+     *         @SWG\Property(property="next", type="string"),
+     *         @SWG\Property(property="last", type="string")
+     *       ),
      *     )
      *   )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Handle Request
+        $perPage = $request->input('perPage', 10);
+
         // Get members
-        $members = $this->memberService->getList();
+        $paginator = $this->memberService->getPaginator($perPage);
+        $members = $paginator->getCollection();
+        $total = $paginator->total();
 
         // Transformer
-        $resources = new Collection($members, new MemberTransformer, 'members');
-        $resources->setMeta([
+        $resource = new Collection($members, new MemberTransformer, 'members');
+        $resource->setMeta([
             'status' => 200,
-            'total' => $members->count(),
         ]);
 
+        // Pagination
+        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
+
         // Serializer
-        $data = $this->fractal->createData($resources)->toJson();
+        $data = $this->fractal->createData($resource)->toJson();
 
         // Response
         return response($data)

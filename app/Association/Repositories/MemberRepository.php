@@ -13,8 +13,8 @@ class MemberRepository
         $this->member = $member;
     }
 
-    public function getAll()
+    public function getPaginate($perPage)
     {
-        return $this->member->all();
+        return $this->member->paginate($perPage);
     }
 }

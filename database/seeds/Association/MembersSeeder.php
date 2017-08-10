@@ -17,6 +17,6 @@ class MembersSeeder extends Seeder
         //
          DB::table('members')->truncate();
 
-        factory(\App\Association\Member::class, 10)->create();
+        factory(\App\Association\Member::class, 100)->create();
     }
 }
