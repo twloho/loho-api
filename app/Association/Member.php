@@ -3,6 +3,7 @@
 namespace App\Association;
 
 use Illuminate\Database\Eloquent\Model;
+use \Carbon\Carbon;
 
 class Member extends Model
 {
@@ -31,4 +32,16 @@ class Member extends Model
         'contact_first_name',
         'contact_cell_phone_number',
     ];
+
+    public function getBirthdayAttribute($value)
+    {
+        return Carbon::parse($value)->toIso8601String();
+    }
+
+    public function setBirthdayAttribute($value)
+    {
+        $date = Carbon::parse($value)->format('Y-m-d H:i:s');
+
+        $this->attributes['birthday'] = $date;
+    }
 }

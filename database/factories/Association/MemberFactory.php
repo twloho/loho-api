@@ -19,7 +19,7 @@ $factory->define(App\Association\Member::class, function (Faker\Generator $faker
         'first_name' => $faker->firstName,
         'gender' => $faker->numberBetween(1, 2),
         'identification' => $faker->regexify('[A-Z]{1}[0-9]{9}'),
-        'birthday' => $faker->dateTime(),
+        'birthday' => $faker->dateTime()->format('Y-m-d H:i:s'),
 
         'email' => $faker->freeEmail(),
         'home_phone_number' => $faker->regexify('09[0-9]{8}'),
