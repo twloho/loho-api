@@ -14,7 +14,6 @@ class Member extends Model
      * @var array
      */
     protected $fillable = [
-        'serial_number',
         'last_name',
         'first_name',
         'gender',

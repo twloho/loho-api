@@ -13,7 +13,7 @@ $factory->define(App\Association\Member::class, function (Faker\Generator $faker
 
     return [
         'status' => $faker->numberBetween(1, 3),
-        'serial_number' => $faker->regexify('A[0-9]{9}'),
+        // 'serial_number' => $faker->regexify('A[0-9]{9}'),
 
         'last_name' => $faker->lastName,
         'first_name' => $faker->firstName,

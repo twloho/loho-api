@@ -17,7 +17,7 @@ class CreateMembersTable extends Migration
         Schema::create('members', function (Blueprint $table) {
             $table->increments('id');
             $table->tinyInteger('status');
-            $table->string('serial_number');
+            // $table->string('serial_number');
 
             $table->string('last_name');
             $table->string('first_name');
