@@ -32,6 +32,7 @@ class MemberController extends Controller
      *   produces={"application/vnd.api+json"},
      *   @SWG\Parameter(in="query", name="page", type="number"),
      *   @SWG\Parameter(in="query", name="perPage", type="number"),
+     *   @SWG\Parameter(in="query", name="sort", type="string"),
      *   @SWG\Response(
      *     response=200,
      *     description="successful operation",
@@ -72,9 +73,10 @@ class MemberController extends Controller
     {
         // Handle Request
         $perPage = $request->input('perPage', 10);
+        $sort = $request->input('sort', null);
 
         // Get members
-        $paginator = $this->memberService->getPaginator($perPage);
+        $paginator = $this->memberService->getPaginator($perPage, $sort);
         $members = $paginator->getCollection();
         $total = $paginator->total();
 
