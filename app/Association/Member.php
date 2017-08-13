@@ -14,7 +14,6 @@ class Member extends Model
      * @var array
      */
     protected $fillable = [
-        'status',
         'serial_number',
         'last_name',
         'first_name',
@@ -31,6 +30,10 @@ class Member extends Model
         'contact_last_name',
         'contact_first_name',
         'contact_cell_phone_number',
+    ];
+
+    protected $attributes = [
+        'status' => 0,
     ];
 
     public function getBirthdayAttribute($value)
