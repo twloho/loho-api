@@ -13,7 +13,7 @@ class MemberRepository
         $this->member = $member;
     }
 
-    public function getPaginate($perPage, $sort)
+    public function getPaginate($perPage, $sort, $filters)
     {
         $member = $this->member;
 
@@ -30,6 +30,15 @@ class MemberRepository
             $member = $member->orderBy($order, $isDesc);
         }
 
+        // handle filter
+        $position = 0;
+        collect($filters)->each(function($item, $key) use (&$member, $position) {
+            if ($position === 0) {
+                $member = $member->where($key, 'like', '%' . $item . '%');
+            } else {
+                $member = $member->orWhere($key, 'like', '%' . $item . '%');
+            }
+        });
 
         return $member->paginate($perPage);
     }

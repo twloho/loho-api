@@ -14,8 +14,8 @@ class MemberService
         $this->memberRepository = $memberRepository;
     }
 
-    public function getPaginator($perPage, $sort)
+    public function getPaginator($perPage, $sort, $filters)
     {
-        return $this->memberRepository->getPaginate($perPage, $sort);
+        return $this->memberRepository->getPaginate($perPage, $sort, $filters);
     }
 }

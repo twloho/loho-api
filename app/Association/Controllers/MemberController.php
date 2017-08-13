@@ -33,6 +33,7 @@ class MemberController extends Controller
      *   @SWG\Parameter(in="query", name="page", type="number"),
      *   @SWG\Parameter(in="query", name="perPage", type="number"),
      *   @SWG\Parameter(in="query", name="sort", type="string"),
+     *   @SWG\Parameter(in="query", name="filter[]", type="string"),
      *   @SWG\Response(
      *     response=200,
      *     description="successful operation",
@@ -74,9 +75,10 @@ class MemberController extends Controller
         // Handle Request
         $perPage = $request->input('perPage', 10);
         $sort = $request->input('sort', null);
+        $filters = $request->input('filter', []);
 
         // Get members
-        $paginator = $this->memberService->getPaginator($perPage, $sort);
+        $paginator = $this->memberService->getPaginator($perPage, $sort, $filters);
         $members = $paginator->getCollection();
         $total = $paginator->total();
 
