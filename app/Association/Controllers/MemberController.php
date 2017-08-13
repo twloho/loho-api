@@ -4,9 +4,11 @@ namespace App\Association\Controllers;
 
 use App\Association\Transformers\MemberTransformer;
 use App\Association\Services\MemberService;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use League\Fractal\Manager as FractalManager;
+use League\Fractal\Resource\Item;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Serializer\JsonApiSerializer;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
@@ -27,7 +29,6 @@ class MemberController extends Controller
      * @SWG\Get(
      *   path="/members",
      *   summary="Get member list",
-     *   description="Member list.",
      *   tags={"member"},
      *   produces={"application/vnd.api+json"},
      *   @SWG\Parameter(in="query", name="page", type="number"),
@@ -96,6 +97,108 @@ class MemberController extends Controller
 
         // Response
         return response($data)
+            ->withHeaders([
+                'Content-Type' => 'application/vnd.api+json',
+            ]);
+    }
+
+    /**
+     * @SWG\Post(
+     *   path="/members",
+     *   summary="Create new member",
+     *   tags={"member"},
+     *   produces={"application/vnd.api+json"},
+     *   @SWG\Parameter(in="body", name="json",
+     *     @SWG\Schema(
+     *       @SWG\Property(property="last_name", type="string"),
+     *       @SWG\Property(property="first_name", type="string"),
+     *       @SWG\Property(property="gender", type="number"),
+     *       @SWG\Property(property="identification", type="string"),
+     *       @SWG\Property(property="birthday", type="date"),
+     *       @SWG\Property(property="email", type="string"),
+     *       @SWG\Property(property="cell_phone_number", type="string"),
+     *       @SWG\Property(property="home_phone_number", type="string"),
+     *       @SWG\Property(property="postcode", type="string"),
+     *       @SWG\Property(property="city", type="string"),
+     *       @SWG\Property(property="zone", type="string"),
+     *       @SWG\Property(property="address", type="string"),
+     *       @SWG\Property(property="contact_last_name", type="string"),
+     *       @SWG\Property(property="contact_first_name", type="string"),
+     *       @SWG\Property(property="contact_cell_phone_number", type="string")
+     *     )
+     *   ),
+     *   @SWG\Response(
+     *     response=200,
+     *     description="successful operation",
+     *     @SWG\Schema(
+     *       type="object",
+     *       @SWG\Property(
+     *         property="data",
+     *         type="object",
+     *         ref="#/definitions/Member"
+     *       ),
+     *       @SWG\Property(
+     *         property="meta",
+     *         type="object",
+     *         @SWG\Property(property="status", type="integer", example=200)
+     *       )
+     *     )
+     *   ),
+     *   @SWG\Response(
+     *     response=400,
+     *     description="error operation",
+     *     @SWG\Schema(
+     *       type="object",
+     *       @SWG\Property(
+     *         property="errors",
+     *         type="array",
+     *         @SWG\Items(ref="#/definitions/MemberException")
+     *       ),
+     *       @SWG\Property(
+     *         property="meta",
+     *         type="object",
+     *         @SWG\Property(property="status", type="integer", example=200)
+     *       )
+     *     )
+     *   )
+     * )
+     */
+    public function store(Request $request) {
+        $memberAttributes = $request->input('data.attributes');
+        $memberData = collect($memberAttributes)->only([
+            'last_name',
+            'first_name',
+
+            'gender',
+            'identification',
+            'birthday',
+            'email',
+            'cell_phone_number',
+            'home_phone_number',
+
+            'postcode',
+            'city',
+            'zone',
+            'address',
+            'contact_last_name',
+            'contact_first_name',
+            'contact_cell_phone_number',
+        ])->toArray();
+
+        // Create member
+        $member = $this->memberService->create($memberData);
+
+        // Transformer
+        $resource = new Item($member, new MemberTransformer, 'members');
+        $resource->setMeta([
+            'status' => 200,
+        ]);
+
+        // Serializer
+        $responseJSON = $this->fractal->createData($resource)->toJson();
+
+        // Response
+        return response($responseJSON)
             ->withHeaders([
                 'Content-Type' => 'application/vnd.api+json',
             ]);

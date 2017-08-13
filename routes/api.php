@@ -26,3 +26,4 @@ use Illuminate\Http\Request;
  */
 
 Route::get('/members', '\App\Association\Controllers\MemberController@index');
+Route::post('/members', '\App\Association\Controllers\MemberController@store');

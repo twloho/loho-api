@@ -42,4 +42,9 @@ class MemberRepository
 
         return $member->paginate($perPage);
     }
+
+    public function create($memberData)
+    {
+        return $this->member->firstOrCreate($memberData);
+    }
 }

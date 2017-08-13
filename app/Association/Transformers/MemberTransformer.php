@@ -32,6 +32,9 @@ class MemberTransformer extends TransformerAbstract
      *     @SWG\Property(property="contact_last_name", type="string"),
      *     @SWG\Property(property="contact_first_name", type="string"),
      *     @SWG\Property(property="contact_cell_phone_number", type="string")
+     *   ),
+     *   @SWG\Property(property="links", type="object",
+     *     @SWG\Property(property="self", type="string")
      *   )
      * )
      */

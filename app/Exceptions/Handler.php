@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use App\Association\Exceptions\MemberException;
 
 class Handler extends ExceptionHandler
 {
@@ -44,6 +45,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof MemberException) {
+            return $exception->response();
+        }
+
         return parent::render($request, $exception);
     }
 
