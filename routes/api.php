@@ -25,5 +25,5 @@ use Illuminate\Http\Request;
  * )
  */
 
-Route::get('/members', '\App\Association\Controllers\MemberController@index');
-Route::post('/members', '\App\Association\Controllers\MemberController@store');
+Route::get('v1/members', '\App\Association\Controllers\MemberController@index');
+Route::post('v1/members', '\App\Association\Controllers\MemberController@store');
